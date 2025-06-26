@@ -1,0 +1,42 @@
+name: CI - Vote
+on:
+  push:
+    branches: [ "main", "develop", "test" ]
+  pull_request:
+    branches: [ "main", "develop", "test" ]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Validar docker-compose
+        run: docker-compose config
+
+  build-vote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Construir imagen VOTE
+        run: docker build -t vote-app ./vote
+        
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Set image name
+        run: echo "IMAGE_NAME=vote-app" >> $GITHUB_ENV
+
+      - name: Tag image
+        run: docker tag ${{ env.IMAGE_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Push image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+
+
+
+
+
