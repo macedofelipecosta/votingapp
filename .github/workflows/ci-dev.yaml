@@ -1,0 +1,14 @@
+name: CI - DEV
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  run-ci:
+    uses: ./.github/workflows/ci-app.yml
+    with:
+      environment: dev
+    secrets: inherit
