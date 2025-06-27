@@ -23,7 +23,7 @@ namespace Worker
 
                 var redisHost = Environment.GetEnvironmentVariable("REDIS_HOST") ?? "redis";
 
-                var pgsql = OpenDbConnection($"Server={pgHost};Username={pgUser};Password={pgPassword};Database={pgDatabase};");
+                var pgsql = OpenDbConnection($"Server={pgHost};Username={pgUser};Password={pgPassword};Database={pgDatabase};Ssl Mode=Require;Trust Server Certificate=true;");
                 var redisConn = OpenRedisConnection(redisHost);
                 var redis = redisConn.GetDatabase();
 
@@ -51,7 +51,7 @@ namespace Worker
                         if (!pgsql.State.Equals(System.Data.ConnectionState.Open))
                         {
                             Console.WriteLine("Reconnecting DB");
-                            pgsql = OpenDbConnection($"Server={pgHost};Username={pgUser};Password={pgPassword};Database={pgDatabase};");
+                            pgsql = OpenDbConnection($"Server={pgHost};Username={pgUser};Password={pgPassword};Database={pgDatabase};Ssl Mode=Require;Trust Server Certificate=true;");
                         }
                         else
                         {

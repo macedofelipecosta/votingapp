@@ -16,7 +16,7 @@ const pgPassword = process.env.DB_PASSWORD || 'postgres';
 const pgHost = process.env.DB_HOST || 'db';
 const pgDatabase = process.env.DB_NAME || 'postgres';
 
-const connectionString = `postgres://${pgUser}:${pgPassword}@${pgHost}/${pgDatabase}`;
+// const connectionString = `postgres://${pgUser}:${pgPassword}@${pgHost}/${pgDatabase}`;
 
 // Mostrar los datos de conexión (sin mostrar contraseña en consola por seguridad)
 console.log("Intentando conectar a PostgreSQL con:");
@@ -27,7 +27,18 @@ console.log({
 });
 
 // Configuración de pool de conexiones a PostgreSQL
-var pool = new Pool({ connectionString });
+var pool = new Pool({
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'postgres',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'postgres',
+  port: process.env.DB_PORT || 5432,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+
 
 io.on('connection', function (socket) {
   socket.emit('message', { text : 'Welcome!' });
