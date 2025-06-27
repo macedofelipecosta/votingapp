@@ -36,14 +36,12 @@ jobs:
           distribution: 'adopt'
 
       - name: SonarCloud Scan
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.organization=${{ secrets.SONAR_ORG }} \
-            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.host.url=https://sonarcloud.io
+        uses: SonarSource/sonarcloud-github-action@v1
+        with:
+          projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 
       - name: Instalar jq
         run: sudo apt-get update && sudo apt-get install -y jq
