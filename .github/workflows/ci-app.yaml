@@ -2,7 +2,10 @@ name: CI/CD - App Completa
 
 on:
   workflow_call:
-
+    inputs:
+      environment:
+        required: true
+        type: string
 jobs:
   validate-config:
     runs-on: ubuntu-latest

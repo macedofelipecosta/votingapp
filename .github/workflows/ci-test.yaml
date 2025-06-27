@@ -8,7 +8,7 @@ on:
 
 jobs:
   run-ci:
-    uses: ./.github/workflows/ci-app.yml
+    uses: ./.github/workflows/ci-app.yaml
     with:
       environment: test
     secrets: inherit
