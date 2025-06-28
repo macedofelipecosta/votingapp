@@ -132,24 +132,58 @@ namespace Worker
                 .ToString();
 
         private static void UpdateVote(NpgsqlConnection connection, string voterId, string vote)
+{
+    var command = connection.CreateCommand();
+    try
+    {
+        command.CommandText = "INSERT INTO votes (id, vote) VALUES (@id, @vote)";
+        command.Parameters.AddWithValue("@id", voterId);
+        command.Parameters.AddWithValue("@vote", vote);
+        command.ExecuteNonQuery();
+    }
+    catch (DbException ex)
+    {
+        Console.WriteLine($"Error en INSERT: {ex.Message}");
+
+        try
         {
-            var command = connection.CreateCommand();
-            try
-            {
-                command.CommandText = "INSERT INTO votes (id, vote) VALUES (@id, @vote)";
-                command.Parameters.AddWithValue("@id", voterId);
-                command.Parameters.AddWithValue("@vote", vote);
-                command.ExecuteNonQuery();
-            }
-            catch (DbException)
-            {
-                command.CommandText = "UPDATE votes SET vote = @vote WHERE id = @id";
-                command.ExecuteNonQuery();
-            }
-            finally
-            {
-                command.Dispose();
-            }
+            command.CommandText = "UPDATE votes SET vote = @vote WHERE id = @id";
+            command.ExecuteNonQuery();
         }
+        catch (Exception innerEx)
+        {
+            Console.WriteLine($"Error en UPDATE: {innerEx.Message}");
+        }
+    }
+    finally
+    {
+        command.Dispose();
+    }
+}
+
+		
+		
+		
+		
+		// private static void UpdateVote(NpgsqlConnection connection, string voterId, string vote)
+        // {
+            // var command = connection.CreateCommand();
+            // try
+            // {
+                // command.CommandText = "INSERT INTO votes (id, vote) VALUES (@id, @vote)";
+                // command.Parameters.AddWithValue("@id", voterId);
+                // command.Parameters.AddWithValue("@vote", vote);
+                // command.ExecuteNonQuery();
+            // }
+            // catch (DbException)
+            // {
+                // command.CommandText = "UPDATE votes SET vote = @vote WHERE id = @id";
+                // command.ExecuteNonQuery();
+            // }
+            // finally
+            // {
+                // command.Dispose();
+            // }
+        // }
     }
 }
