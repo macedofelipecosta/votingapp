@@ -32,7 +32,7 @@ var pool = new Pool({
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'votedb',
-  port: process.env.DB_PORT || 5432,
+  port: process.env.DB_PORT || 5432, 
   ssl: {
     rejectUnauthorized: false
   }
@@ -68,6 +68,7 @@ async.retry(
       console.error(err);
       return;
     }
+    console.log("Connected to db");
     getVotes(client);
   }
 );
@@ -98,7 +99,7 @@ function collectVotesFromResult(result) {
 
 app.use(cookieParser());
 app.use(express.urlencoded());
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname + '/views')));
 
 
 app.get('/result', function (req, res) {
