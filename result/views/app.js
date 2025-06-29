@@ -10,7 +10,7 @@ app.controller('statsCtrl', function ($scope) {
 
   var updateScores = function () {
     socket.on('scores', function (json) {
-      let data = JSON.parse(json); //--> Se agrega var para evitar error de SonarQube
+      data = JSON.parse(json); //--> Se agrega var para evitar error de SonarQube
       var a = parseInt(data.a || 0);
       var b = parseInt(data.b || 0);
 
