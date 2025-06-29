@@ -30,4 +30,5 @@ COPY . /app
 
 RUN npm install
 
-CMD ["/app/tests.sh"]
+CMD ["bash", "/app/tests.sh"]
+
