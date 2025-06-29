@@ -3,7 +3,9 @@ version: '2'
 services:
 
   sut:
-    build: ./tests/
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
     depends_on:
       - vote
       - result
