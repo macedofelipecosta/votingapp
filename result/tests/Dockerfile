@@ -1,12 +1,33 @@
-FROM node:18-slim  
+FROM node:18-slim
 
-RUN apt-get update -qq && apt-get install -qy \ 
+RUN apt-get update && apt-get install -y \
     ca-certificates \
-    bzip2 \
-    curl \
-    libfontconfig \
-    --no-install-recommends
-RUN yarn global add phantomjs-prebuilt
-ADD . /app
+    fonts-liberation \
+    libappindicator3-1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libgbm1 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libx11-xcb1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    xdg-utils \
+    --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Evitar advertencias de Puppeteer
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
 WORKDIR /app
+COPY . /app
+
+RUN npm install
+
 CMD ["/app/tests.sh"]
